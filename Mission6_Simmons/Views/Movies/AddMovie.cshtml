@@ -1,0 +1,75 @@
+﻿@model Mission6_Simmons.Models.MovieModel
+
+
+@{
+    ViewBag.Title = "Add Movie";
+}
+
+<h2>Add a New Movie</h2>
+
+<form asp-controller="Movies" asp-action="SubmitForm" method="post">
+
+    <div>
+        <label asp-for="Category">Category</label>
+        <input asp-for="Category" required />
+    </div>
+    <br />
+    <div>
+        <label asp-for="Title">Title</label>
+        <input asp-for="Title" required />
+    </div>
+    <br />
+    <div>
+        <label asp-for="Year">Year</label>
+        <input asp-for="Year" required type="number" />
+    </div>
+    <br />
+    <div>
+        <label asp-for="Director">Director</label>
+        <input asp-for="Director" required />
+    </div>
+    <br />
+    <div>
+        <label asp-for="Rating">Rating</label>
+        <select asp-for="Rating">
+            <option>G</option>
+            <option>PG</option>
+            <option>PG-13</option>
+            <option>R</option>
+        </select>
+    </div>
+    <br />
+    <div>
+        <label asp-for="Edited">Edited</label>
+        <select asp-for="Edited">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+    </div>
+    <br />
+    <div>
+        <label asp-for="LentTo">Lent To (Optional)</label>
+        <input asp-for="LentTo" />
+    </div>
+    <br />
+    <div>
+        <label asp-for="Notes">Notes (Optional)</label>
+        <input asp-for="Notes" maxlength="25" />
+    </div>
+    <br />
+    <button type="submit">Add Movie</button>
+</form>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Check for a success message in TempData
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                    alert("@Html.Raw(TempData["SuccessMessage"])");
+            </text>
+        }
+                });
+    </script>
+}
