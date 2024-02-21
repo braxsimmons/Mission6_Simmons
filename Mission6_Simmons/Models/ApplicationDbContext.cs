@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Mission6_Simmons.Models;
 using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Mission6_Simmons.Models
 {
@@ -12,6 +13,9 @@ namespace Mission6_Simmons.Models
         }
 
         public DbSet<MovieModel> Movies { get; set; }
-       
+        public DbSet<Category> Categories { get; set; }
     }
 }
+
+
+

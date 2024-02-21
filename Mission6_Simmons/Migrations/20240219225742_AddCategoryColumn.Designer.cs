@@ -10,8 +10,8 @@ using Mission6_Simmons.Models;
 namespace Mission6_Simmons.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240211041753_plswork")]
-    partial class plswork
+    [Migration("20240219225742_AddCategoryColumn")]
+    partial class AddCategoryColumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,13 +21,17 @@ namespace Mission6_Simmons.Migrations
 
             modelBuilder.Entity("Mission6_Simmons.Models.MovieModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("MovieId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("movieID");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("categoryID");
+
+                    b.Property<bool>("CopiedToPlex")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -43,8 +47,9 @@ namespace Mission6_Simmons.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("RatingId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Rating")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -53,42 +58,9 @@ namespace Mission6_Simmons.Migrations
                     b.Property<int>("Year")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("RatingId");
+                    b.HasKey("MovieId");
 
                     b.ToTable("Movies");
-                });
-
-            modelBuilder.Entity("Mission6_Simmons.Models.Rating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Ratings");
-                });
-
-            modelBuilder.Entity("Mission6_Simmons.Models.MovieModel", b =>
-                {
-                    b.HasOne("Mission6_Simmons.Models.Rating", "Rating")
-                        .WithMany("Movies")
-                        .HasForeignKey("RatingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Rating");
-                });
-
-            modelBuilder.Entity("Mission6_Simmons.Models.Rating", b =>
-                {
-                    b.Navigation("Movies");
                 });
 #pragma warning restore 612, 618
         }

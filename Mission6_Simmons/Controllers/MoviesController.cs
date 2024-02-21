@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Mission6_Simmons.Models; // Make sure this using directive matches your project's namespace
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Mission6_Simmons.Models;
 
 namespace Mission6_Simmons.Controllers
 {
@@ -8,32 +8,74 @@ namespace Mission6_Simmons.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        // Constructor injects the ApplicationDbContext
         public MoviesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET action to display the form for adding a new movie
-        public IActionResult AddMovie()
+        // GET: List all movies
+        public IActionResult ListMovies()
         {
-            return View(new MovieModel()); // Provide a new, empty MovieModel to the view
+            var movies = _context.Movies.Include(m => m.Category)
+                .ToList();
+            return View(movies);
         }
 
-        // POST action to process the form submission
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubmitForm(MovieModel model)
+        // GET: Show form to add a new movie
+        public IActionResult AddMovie()
         {
-            if (ModelState.IsValid)
-            {
-                _context.Movies.Add(model); // Add the movie to the database context
-                await _context.SaveChangesAsync(); // Save changes asynchronously
+            return View(new MovieModel()); 
+        }
 
-                TempData["SuccessMessage"] = "Movie submitted successfully!";
-                return RedirectToAction("AddMovie"); // Redirect back to clear the form
-            }
-            return View("AddMovie", model); // If model state is invalid, return with validation feedback
+        // POST: Add a new movie
+        [HttpPost]
+        public IActionResult AddMovie(MovieModel movie)
+        {
+                _context.Movies.Add(movie);
+                _context.SaveChanges(); 
+
+            return RedirectToAction("ListMovies");
+        }
+
+        public IActionResult Edit(int id)
+
+        {
+            var recordToEdit = _context.Movies.Include("Category")
+                .Where(x => x.MovieId == id)
+                .FirstOrDefault();
+            ViewBag.C = _context.Categories.ToList();
+
+            return View("EditMovie", recordToEdit);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(MovieModel m)
+        {
+            _context.Update(m);
+            _context.SaveChanges();
+
+            return RedirectToAction("ListMovies");
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var recordToDelete = _context.Movies
+                .Where(x => x.MovieId == id)
+                .FirstOrDefault();
+
+            return View(recordToDelete);
+        }
+
+        [HttpPost]
+
+        public IActionResult Delete(MovieModel model)
+        {
+            _context.Movies.Remove(model);
+            _context.SaveChanges();
+
+            return RedirectToAction("ListMovies");
         }
     }
 }
+   

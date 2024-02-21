@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mission6_Simmons.Models;
 
@@ -10,44 +11,34 @@ using Mission6_Simmons.Models;
 namespace Mission6_Simmons.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240219233213_AdjustNullableProperties")]
+    partial class AdjustNullableProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
 
-            modelBuilder.Entity("Mission6_Simmons.Models.Category", b =>
-                {
-                    b.Property<int>("CategoryID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("CategoryID");
-
-                    b.ToTable("Categories");
-                });
-
             modelBuilder.Entity("Mission6_Simmons.Models.MovieModel", b =>
                 {
-                    b.Property<int>("MovieId")
+                    b.Property<int?>("MovieId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("movieID");
 
                     b.Property<int?>("CategoryID")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("categoryID");
 
-                    b.Property<bool>("CopiedToPlex")
+                    b.Property<bool?>("CopiedToPlex")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("Edited")
+                    b.Property<bool?>("Edited")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("LentTo")
@@ -58,29 +49,20 @@ namespace Mission6_Simmons.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Rating")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Year")
+                    b.Property<int?>("Year")
+                        .IsRequired()
                         .HasColumnType("INTEGER");
 
                     b.HasKey("MovieId");
 
-                    b.HasIndex("CategoryID");
-
                     b.ToTable("Movies");
-                });
-
-            modelBuilder.Entity("Mission6_Simmons.Models.MovieModel", b =>
-                {
-                    b.HasOne("Mission6_Simmons.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryID");
-
-                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

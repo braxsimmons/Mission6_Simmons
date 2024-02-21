@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Mission6_Simmons.Models;
 using System.Diagnostics;
 
@@ -24,12 +25,5 @@ namespace Mission6_Simmons.Controllers
             return View();
         }
 
-        // Removed SubmitForm method as it's assumed to be handled in a more relevant controller (e.g., MoviesController)
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
